@@ -1,0 +1,57 @@
+modLoader="javafml"
+loaderVersion="${forge_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/smokahs/Tinkers-Metallurgy/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="smokahs"
+description='''
+Makes the Create: Metallurgy foundry a full stand-in for the Tinkers' Construct smeltery.
+Melting, alloying, mob melting, casting and molding all carry across, so the item side stays
+Tinkers' and the machine side becomes Create: Metallurgy.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="mantle"
+    mandatory=true
+    versionRange="[${mantle_version},)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="tconstruct"
+    mandatory=true
+    versionRange="[${tinkers_version},)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="createmetallurgy"
+    mandatory=false
+    versionRange="[1.0.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="tic3nh"
+    mandatory=false
+    versionRange="[2.0.0,)"
+    ordering="AFTER"
+    side="BOTH"

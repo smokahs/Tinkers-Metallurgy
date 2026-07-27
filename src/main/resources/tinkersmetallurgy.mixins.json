@@ -1,0 +1,20 @@
+{
+    "required": true,
+    "minVersion": "0.8.5",
+    "package": "com.tinkersmetallurgy.mixin",
+    "plugin": "com.tinkersmetallurgy.mixin.MixinPlugin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "tinkersmetallurgy.refmap.json",
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "mixins": [
+        "RecipeManagerMixin",
+        "CastingBlockMixin",
+        "ProcessingRecipeAccessor",
+        "CastingRecipeAccessor",
+        "BasinRecipeMixin"
+    ],
+    "client": ["CastingRendererMixin", "TicCatalystMixin", "TicCategoryMixin", "CreateJeiMixin"],
+    "server": []
+}

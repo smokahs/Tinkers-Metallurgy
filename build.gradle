@@ -1,0 +1,141 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7.38'
+    }
+}
+
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0,6.0.37]'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+version = "${minecraft_version}-${mod_version}"
+group = mod_group
+
+base {
+    archivesName = mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+minecraft {
+    mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
+
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+        client { property 'forge.enabledGameTestNamespaces', mod_id }
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+    }
+}
+
+apply plugin: 'org.spongepowered.mixin'
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
+repositories {
+    mavenCentral()
+
+    // tinkers construct and mantle
+    maven { name 'DVS1 Maven FS'; url 'https://dvs1.progwml6.com/files/maven' }
+    maven { name 'ModMaven'; url 'https://modmaven.dev' }
+    maven { name 'BlameJared Maven'; url 'https://maven.blamejared.com' }
+    maven { name 'Dogforce Games'; url 'https://www.dogforce-games.com/maven/' }
+
+    // create, ponder, flywheel
+    maven { url = 'https://maven.createmod.net' }
+    // registrate
+    maven { url = 'https://maven.tterrag.com' }
+
+    // create metallurgy
+    maven { url = 'https://api.modrinth.com/maven'; content { includeGroup 'maven.modrinth' } }
+    maven { url = 'https://www.cursemaven.com'; content { includeGroup 'curse.maven' } }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // tinkers side. compiled against, needed at runtime
+    implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}")
+    implementation fg.deobf("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tinkers_version}")
+
+    // create side. create metallurgy is a soft dependency, so compileOnly plus runtime for dev
+    implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    compileOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("maven.modrinth:create-metallurgy:${createmetallurgy_version}")
+
+    // mixin. plain mixin only, no mixinextras, so nothing gets bundled into the jar.
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+    // jei, optional integration
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+        minecraft_version: minecraft_version, minecraft_range: minecraft_range,
+        forge_version: forge_version, forge_range: forge_range,
+        mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,
+        mod_license: mod_license, mantle_version: mantle_version, tinkers_version: tinkers_version
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+            'Specification-Title'     : mod_id,
+            'Specification-Vendor'    : mod_name,
+            'Specification-Version'   : '1',
+            'Implementation-Title'    : project.name,
+            'Implementation-Version'  : project.jar.archiveVersion,
+            'Implementation-Vendor'   : mod_name,
+            'MixinConfigs'            : "${mod_id}.mixins.json"
+        ])
+    }
+}
+
+spotless {
+    java {
+        target 'src/main/java/**/*.java'
+        importOrder('java', 'javax', 'net.minecraft', 'net.minecraftforge', 'slimeknights', 'com.simibubi', 'fr.lucreeper74', 'com.tinkersmetallurgy')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+}
