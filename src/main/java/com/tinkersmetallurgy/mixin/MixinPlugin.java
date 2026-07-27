@@ -7,7 +7,9 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-// create metallurgy and jei are optional, and a mixin whose target is missing hard crashes the game.
+// a mixin whose target is missing hard crashes the game. jei is optional; create and create
+// metallurgy are required, but mixins are prepared before forge checks dependencies, so without the
+// gate a missing one crashes here instead of reaching the missing-mods screen that names it.
 // ModList cannot be asked this early, so check whether the target class is on the classpath at all.
 public class MixinPlugin implements IMixinConfigPlugin {
 

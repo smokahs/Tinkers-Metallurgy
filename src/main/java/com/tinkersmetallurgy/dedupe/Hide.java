@@ -41,7 +41,7 @@ public final class Hide {
     private static Set<Item> smelteryBlocks;
 
     public static boolean hidesSmelteryBlocks() {
-        return TinkersMetallurgy.cmLoaded() && Cfg.INSTANCE.hideTicSmelteryBlocks.get();
+        return Cfg.INSTANCE.hideTicSmelteryBlocks.get();
     }
 
     // also used when filtering recipe viewer catalysts, which register separately from creative.
@@ -101,9 +101,6 @@ public final class Hide {
 
     @SubscribeEvent
     public static void hideFromCreative(BuildCreativeModeTabContentsEvent event) {
-        if (!TinkersMetallurgy.cmLoaded()) {
-            return;
-        }
         Set<Item> items = hidden();
         if (items.isEmpty()) {
             return;

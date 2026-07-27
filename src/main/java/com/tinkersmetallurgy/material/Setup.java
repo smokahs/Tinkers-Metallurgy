@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import com.tinkersmetallurgy.TinkersMetallurgy;
 
-// registers the generated material pack, only when create metallurgy is installed.
+// registers the generated material pack.
 @Mod.EventBusSubscriber(modid = TinkersMetallurgy.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class Setup {
 
@@ -20,9 +20,6 @@ public final class Setup {
 
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
-        if (!TinkersMetallurgy.cmLoaded()) {
-            return;
-        }
         Pack pack = Pack.readMetaAndCreate(
                 PACK_ID,
                 Component.literal("Tinkers' Metallurgy materials"),

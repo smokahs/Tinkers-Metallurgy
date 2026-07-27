@@ -1,11 +1,9 @@
 package com.tinkersmetallurgy;
 
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.tinkersmetallurgy.config.Cfg;
 
@@ -28,16 +26,7 @@ public final class TinkersMetallurgy {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TinkersMetallurgy() {
-        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Cfg.SPEC);
-
-        if (!cmLoaded()) {
-            LOGGER.info("Create: Metallurgy not present; Tinkers' Metallurgy will stay dormant.");
-        }
-    }
-
-    public static boolean cmLoaded() {
-        return ModList.get().isLoaded(CM);
     }
 
     public static boolean nhLoaded() {

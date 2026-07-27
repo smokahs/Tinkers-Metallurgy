@@ -55,7 +55,7 @@ public class Plugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        if (!TinkersMetallurgy.cmLoaded() || Cfg.INSTANCE.jeiCategories.get() != Categories.TINKERS) {
+        if (Cfg.INSTANCE.jeiCategories.get() != Categories.TINKERS) {
             return;
         }
         ClientLevel level = Minecraft.getInstance().level;
@@ -66,10 +66,6 @@ public class Plugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        if (!TinkersMetallurgy.cmLoaded()) {
-            return;
-        }
-
         catalyst(registration, "casting_table", TConstructJEIConstants.MOLDING);
         catalyst(registration, "casting_basin", TConstructJEIConstants.MOLDING);
 
@@ -89,10 +85,6 @@ public class Plugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
-        if (!TinkersMetallurgy.cmLoaded()) {
-            return;
-        }
-
         IRecipeManager recipes = runtime.getRecipeManager();
         switch (Cfg.INSTANCE.jeiCategories.get()) {
             case CREATE_METALLURGY -> hideTinkersCategories(recipes);
@@ -123,7 +115,8 @@ public class Plugin implements IModPlugin {
                 TIC_SMELTERY.size());
     }
 
-    // looked up by name rather than referenced, so this class still loads without create metallurgy.
+    // looked up by name rather than referenced, so a block create metallurgy renames goes quiet
+    // instead of throwing.
     private static void catalyst(IRecipeCatalystRegistration registration, String name,
                                  RecipeType<?>... types) {
         Block block = block(name);

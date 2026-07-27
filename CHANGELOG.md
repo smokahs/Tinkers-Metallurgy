@@ -4,6 +4,8 @@
 
 Initial release!
 
+**Requires** Mantle, Tinkers' Construct, Create (6.0.8–6.1.0) and Create: Metallurgy (1.0.1+). JEI is optional.
+
 1. The whole Tinkers' smeltery now runs on Create: Metallurgy machines
     - Melting, ore melting, material melting and damagable melting → Foundry lid
     - Alloying → Foundry mixer (catalysts are re-emitted as outputs so they aren't eaten)

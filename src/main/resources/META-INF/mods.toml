@@ -43,9 +43,16 @@ Tinkers' and the machine side becomes Create: Metallurgy.
     side="BOTH"
 
 [[dependencies.${mod_id}]]
+    modId="create"
+    mandatory=true
+    versionRange="${create_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
     modId="createmetallurgy"
-    mandatory=false
-    versionRange="[1.0.0,)"
+    mandatory=true
+    versionRange="${createmetallurgy_range}"
     ordering="AFTER"
     side="BOTH"
 

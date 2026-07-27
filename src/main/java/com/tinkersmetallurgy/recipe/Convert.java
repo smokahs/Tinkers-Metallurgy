@@ -32,9 +32,6 @@ public final class Convert {
 
     public static void inject(Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> byType,
                               Map<ResourceLocation, Recipe<?>> byName) {
-        if (!TinkersMetallurgy.cmLoaded()) {
-            return;
-        }
         Fluids.invalidate();
 
         Sink sink = new Sink(byType, byName);

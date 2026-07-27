@@ -8,13 +8,26 @@
 
 Minecraft 1.20.1, Forge 47.4.0, MIT.
 
-Requires [Mantle](https://www.curseforge.com/minecraft/mc-mods/mantle) and [Tinkers' Construct](https://www.curseforge.com/minecraft/mc-mods/tinkers-construct)
+Requires [Mantle](https://www.curseforge.com/minecraft/mc-mods/mantle), [Tinkers' Construct](https://www.curseforge.com/minecraft/mc-mods/tinkers-construct), [Create](https://www.curseforge.com/minecraft/mc-mods/create) and [Create: Metallurgy](https://modrinth.com/mod/create-metallurgy)
 
 </div>
 
 ## About
 
 Replaces all Tinker's Smeltery functions with Create Metallurgy's foundry, with full recipe compatibility!
+
+## Requirements
+
+The following mods are dependencies:
+
+| Mod | Version |
+| --- | --- |
+| Mantle | 1.11.104+ |
+| Tinkers' Construct | 3.11.2.166+ |
+| Create | 6.0.8 – 6.1.0 |
+| Create: Metallurgy | 1.0.1+ |
+
+[JEI](https://www.curseforge.com/minecraft/mc-mods/jei) is optional, i worked hard on the recipeviewers!!!!
 
 ## Changelog
 

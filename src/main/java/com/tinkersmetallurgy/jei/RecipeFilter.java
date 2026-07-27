@@ -23,7 +23,7 @@ public final class RecipeFilter {
     private RecipeFilter() {}
 
     public static boolean hidesConverted() {
-        return TinkersMetallurgy.cmLoaded() && Cfg.INSTANCE.jeiCategories.get() == Categories.TINKERS;
+        return Cfg.INSTANCE.jeiCategories.get() == Categories.TINKERS;
     }
 
     // kept even under TINKERS: both carry a crucible heat, and mob boiling a damage per hit, that the
