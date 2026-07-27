@@ -34,11 +34,16 @@ public class Plugin implements IModPlugin {
 
     private static final ResourceLocation UID = new ResourceLocation(TinkersMetallurgy.MOD_ID, "jei");
 
-    // tinkers tabs hidden even under TINKERS: it has nowhere to draw the crucible heat or the damage
-    // per hit that these two turn on. see RecipeFilter.
+    // tinkers tabs hidden even under TINKERS. alloying and mob boiling go to the create metallurgy
+    // side, having nowhere to draw the crucible heat or the damage per hit that these two turn on;
+    // see RecipeFilter. melting goes nowhere: it lists the same recipes as the foundry tab over a
+    // melter's solid fuel slot, and the foundry tab is the one our conversion matches, byproducts and
+    // foundry ore rate and all. dropping it also takes the melter, the melting pan and the melting
+    // modifier out of the catalyst row, none of which can melt anything here.
     private static final List<RecipeType<?>> TIC_CM_SIDE = List.of(
             TConstructJEIConstants.ALLOY,
-            TConstructJEIConstants.ENTITY_MELTING);
+            TConstructJEIConstants.ENTITY_MELTING,
+            TConstructJEIConstants.MELTING);
 
     private static final List<RecipeType<?>> TIC_SMELTERY = List.of(
             TConstructJEIConstants.CASTING_TABLE,
@@ -73,11 +78,10 @@ public class Plugin implements IModPlugin {
             return;
         }
 
-        catalyst(registration, "foundry_lid", TConstructJEIConstants.MELTING, TConstructJEIConstants.FOUNDRY);
-        catalyst(registration, "foundry_basin", TConstructJEIConstants.MELTING, TConstructJEIConstants.FOUNDRY);
+        catalyst(registration, "foundry_lid", TConstructJEIConstants.FOUNDRY);
+        catalyst(registration, "foundry_basin", TConstructJEIConstants.FOUNDRY);
 
-        catalyst(registration, "industrial_crucible", TConstructJEIConstants.MELTING,
-                TConstructJEIConstants.FOUNDRY);
+        catalyst(registration, "industrial_crucible", TConstructJEIConstants.FOUNDRY);
 
         catalyst(registration, "casting_table", TConstructJEIConstants.CASTING_TABLE);
         catalyst(registration, "casting_basin", TConstructJEIConstants.CASTING_BASIN);
@@ -102,7 +106,7 @@ public class Plugin implements IModPlugin {
         }
         TinkersMetallurgy.LOGGER.info(
                 "Kept {} converted recipes out of Create: Metallurgy's categories; hid its casting tabs"
-                        + " and Tinkers' alloying and mob boiling ones",
+                        + " and Tinkers' alloying, mob boiling and melting ones",
                 RecipeFilter.filtered());
     }
 

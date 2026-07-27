@@ -19,8 +19,8 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 
 // a tinkers tab with only its icon swapped, keeping the compact cycling layout. titles stay as they
 // are: tinkers names them after the process, not the block, so they read right against these
-// machines.
-final class CategorySkin<T> implements IRecipeCategory<T> {
+// machines. FoundrySkin builds on this to redraw one of them.
+class CategorySkin<T> implements IRecipeCategory<T> {
 
     private final IRecipeCategory<T> delegate;
     private final IDrawable icon;

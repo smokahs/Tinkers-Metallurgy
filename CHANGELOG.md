@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.1.0
+
+1. Tinkers' melting category dropped
+    - It listed the same 336 pages as the foundry category, one tab for the melter and one for the foundry
+    - The foundry tab is the one conversion matches: byproducts, foundry ore rate, no solid fuel
+    - Takes the melter, the melting pan and the melting modifier out of the catalyst row with it, none of which melt anything once the smeltery is gone
+2. The foundry category draws Create heat instead of Tinkers'
+    - The melting point in °C becomes the blaze burner level the converted recipe needs
+    - `[jei] createHeat` turns it off
+
 ## v1.0.0
 
 Initial release!
@@ -8,18 +18,15 @@ Initial release!
 
 1. The whole Tinkers' smeltery now runs on Create: Metallurgy machines
     - Melting, ore melting, material melting and damagable melting → Foundry lid
-    - Alloying → Foundry mixer (catalysts are re-emitted as outputs so they aren't eaten)
+    - Alloying → Foundry mixer
     - Entity melting → Industrial crucible
     - Casting and molding → Casting table and basin, all ~22 Tinkers' casting serialisers
     - Conversion runs at datapack reload, after tags are bound and the material registry is filled, so recipes another addon added to the smeltery are converted too
     - Every conversion is individually toggleable under `[convert]`
 2. Casting is covered without reimplementing 22 recipe types
     - Conversion reads the display view every Tinkers' casting recipe already hands to JEI, so material-driven recipes expand into one resolved entry per material, NBT and all
-    - No mixin needed and the results show up in JEI on their own
 3. Graphite molds are gone
-    - Every Create: Metallurgy casting recipe is repointed at the matching Tinkers' cast
-    - The recipes that made a mold are deleted and all six mold items are hidden
-    - The swap runs before the dedupe, so plates, rods, gears and the metals Tinkers' has no recipe for all survive
+    - Every Create: Metallurgy casting recipe is converted to the matching Tinkers' cast
 4. Tinkers' fluids are prioritized
     - 18 shared metals fold into the Tinkers' fluid; Create: Metallurgy recipes are rewritten onto it rather than deleted
     - Duplicate molten buckets hidden from creative and JEI

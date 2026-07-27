@@ -38,6 +38,7 @@ public final class Cfg {
     public final BooleanValue generateCmMaterials;
 
     public final ForgeConfigSpec.EnumValue<Categories> jeiCategories;
+    public final BooleanValue jeiCreateHeat;
 
     // both mods can show the same smeltery recipe, so one has to give way.
     public enum Categories {
@@ -130,8 +131,16 @@ public final class Cfg {
                         "  TINKERS:           Tinkers' compact categories are kept and pointed at the",
                         "                     Create: Metallurgy machines; converted recipes are hidden.",
                         "  BOTH:              leave both alone, showing every recipe twice.",
-                        "Tinkers' molding category is always kept, since nothing else shows cast creation.")
+                        "Tinkers' molding category is always kept, since nothing else shows cast creation.",
+                        "Tinkers' melting category is dropped under TINKERS: it lists the same recipes as",
+                        "its foundry category, which is the one the conversion matches.")
                 .defineEnum("categories", Categories.TINKERS);
+        jeiCreateHeat = b
+                .comment("Draw the Create heat requirement on Tinkers' foundry category in place of its",
+                        "melting point and fuel tank. Converted melting recipes run on the foundry lid,",
+                        "which reads a blaze burner, not the fuels Tinkers' lists. Only applies under",
+                        "TINKERS, and only while melting is being converted.")
+                .define("createHeat", true);
         b.pop();
     }
 }
