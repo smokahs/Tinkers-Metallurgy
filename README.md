@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="https://github.com/smokahs/Tinkers-Metallurgy/blob/master/webassets/icon.png" width="186" alt="Tinkers Metallurgy Icon">
 
 # Tinkers' Metallurgy
 
