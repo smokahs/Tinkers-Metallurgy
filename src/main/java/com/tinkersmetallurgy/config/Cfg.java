@@ -24,10 +24,23 @@ public final class Cfg {
     public final BooleanValue casting;
     public final BooleanValue molding;
 
+    public final IntValue lowheatedThreshold;
     public final IntValue heatedThreshold;
     public final IntValue superheatedThreshold;
+    public final IntValue crucibleLowheatedHeat;
     public final IntValue crucibleHeatedHeat;
     public final IntValue crucibleSuperheatedHeat;
+
+    public final BooleanValue hotBurners;
+    public final BooleanValue basicBurnerBoiler;
+    public final BooleanValue passiveBoilerHeaters;
+    public final BooleanValue ignoresFuelTagWhitelist;
+    public final BooleanValue ignoresBurnerStarters;
+    public final IntValue baseMultiplier;
+    public final IntValue fanMultiplier;
+    public final IntValue fanSpeedRequired;
+    public final BooleanValue fanHorizontalOnly;
+    public final BooleanValue dispenserBurner;
 
     public final BooleanValue replaceGraphiteMolds;
 
@@ -67,14 +80,28 @@ public final class Cfg {
                 .define("molding", true);
         b.pop();
 
-        b.comment("Tinkers' melting temperatures are absolute; Create heat is a three step ladder.",
+        b.comment("Tinkers' melting temperatures are absolute; Create heat is a four step ladder.",
                 "These thresholds decide where a converted recipe lands.").push("heat");
+        lowheatedThreshold = b
+                .comment("At or above this Tinkers' temperature a recipe requires a low-heated basin",
+                        "(basic burner). Below it the recipe needs no heat at all.")
+                .defineInRange("lowheatedThreshold", 1, 0, 100000);
         heatedThreshold = b
-                .comment("At or above this Tinkers' temperature a recipe requires a heated basin (blaze burner).")
-                .defineInRange("heatedThreshold", 1, 0, 100000);
+                .comment("At or above this Tinkers' temperature a recipe requires a heated basin (blaze burner).",
+                        "The default splits the metals where Tinkers' own temperatures already do: tin (225),",
+                        "lead (330), zinc (420) and aluminum (425) melt on a basic burner, copper (500) up to",
+                        "gold (700) need a blaze, and iron (800) up needs blaze cake. Set this to 1 to put",
+                        "everything back on a blaze burner the way it was before the basic burner existed.")
+                .defineInRange("heatedThreshold", 500, 0, 100000);
         superheatedThreshold = b
                 .comment("At or above this Tinkers' temperature a recipe requires a superheated basin (blaze cake).")
                 .defineInRange("superheatedThreshold", 800, 0, 100000);
+        crucibleLowheatedHeat = b
+                .comment("Minimum crucible heat for a converted mob boiling recipe below the heated",
+                        "threshold. A burning basic burner reads 0, the same as the passive heaters it",
+                        "replaces, so 0 is what a crucible standing on them can reach: the requirement is",
+                        "really that no square of the footprint is bare, since bare blocks each read -1.")
+                .defineInRange("crucibleLowheatedHeat", 0, 0, 50);
         crucibleHeatedHeat = b
                 .comment("Minimum crucible heat for a converted mob boiling recipe below the superheated",
                         "threshold. The crucible sums the heat of every block under its footprint: a lit",
@@ -86,6 +113,46 @@ public final class Cfg {
                 .comment("Minimum crucible heat for a converted mob boiling recipe at or above the",
                         "superheated threshold.")
                 .defineInRange("crucibleSuperheatedHeat", 9, 0, 50);
+        b.pop();
+
+        b.comment("The basic burner: a fed burner standing in for the heat a blaze burner gives away, and",
+                "the passive heaters it takes off the table. Ported from Create Low-Heated (MIT).").push("burner");
+        hotBurners = b
+                .comment("When true a burning basic burner reads as a kindled blaze burner and an empowered",
+                        "one as a seething blaze burner, collapsing the low-heated tier back into the two",
+                        "Create already had. An unlit burner is unaffected either way.")
+                .define("hotBurners", false);
+        basicBurnerBoiler = b
+                .comment("Let the basic burner heat steam engines. Turning this off leaves it a recipe heater",
+                        "only, and puts every passive boiler heater back as a consequence.")
+                .define("basicBurnerBoiler", true);
+        passiveBoilerHeaters = b
+                .comment("Put the passive heaters back: campfires, lava and the rest of Create's",
+                        "#create:passive_boiler_heaters tag heat boilers and basins again, for free.")
+                .define("passiveBoilerHeaters", false);
+        ignoresFuelTagWhitelist = b
+                .comment("Accept anything with a burn time as burner fuel, rather than only the items in",
+                        "#tinkersmetallurgy:basic_burner_fuel_whitelist. The blacklist applies either way.")
+                .define("ignoresFuelTagWhitelist", true);
+        ignoresBurnerStarters = b
+                .comment("Light a burner the moment fuel goes in, skipping the flint and steel step.")
+                .define("ignoresBurnerStarters", false);
+        baseMultiplier = b
+                .comment("How much faster an unempowered burner eats its fuel. Meant for use alongside",
+                        "hotBurners; leave it at 1 otherwise.")
+                .defineInRange("baseMultiplier", 1, 1, Integer.MAX_VALUE);
+        fanMultiplier = b
+                .comment("How much faster a fan-empowered burner eats its fuel.")
+                .defineInRange("fanMultiplier", 32, 1, Integer.MAX_VALUE);
+        fanSpeedRequired = b
+                .comment("Fan speed needed to empower a burner.")
+                .defineInRange("fanSpeedRequired", 256, 1, Integer.MAX_VALUE);
+        fanHorizontalOnly = b
+                .comment("Only let fans blowing sideways empower a burner.")
+                .define("fanHorizontalOnly", true);
+        dispenserBurner = b
+                .comment("Let a dispenser light a burner with flint and steel.")
+                .define("dispenserBurner", true);
         b.pop();
 
         b.comment("Create: Metallurgy casts with graphite molds, Tinkers' with casts. Only one is needed.")

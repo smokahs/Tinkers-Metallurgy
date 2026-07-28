@@ -1,5 +1,42 @@
 # Changelog
 
+## v1.2.0
+
+Create Low-Heated absorbed, MIT, from [zehmaria/createlowheated](https://github.com/zehmaria/createlowheated). Do not install both
+
+1. A fourth heat level, below the blaze burner
+    - Create's `HeatCondition` gains `lowheated` and its `HeatLevel` gains `LOW`, so `"heatRequirement": "lowheated"` works in any basin recipe
+    - The Basic Burner is the block that reaches it: one slot of solid fuel, lit by hand with flint and steel, three andesite alloy to craft
+    - Feed it by hand, by funnel, by deployer, by mechanical arm, by dropping items on it, or by dispenser
+    - A max-RPM encased fan pointed at one empowers it to a kindled blaze burner's heat, at 32x the fuel
+2. The Tinkers' smeltery uses it
+    - `[heat] lowheatedThreshold` puts converted melting and alloying recipes on the new rung
+    - `[heat] heatedThreshold` moves from 1 to **500**, splitting the metals where Tinkers' own temperatures already do: tin (225), lead (330), zinc (420) and aluminum (425) melt on a basic burner, copper (500) up to gold (700) need a blaze, iron (800) up needs blaze cake. Set it back to 1 for the old behaviour
+    - Mob boiling gets `[heat] crucibleLowheatedHeat`, at 0: a burning basic burner reads 0 to the crucible the way a passive heater did, and bare blocks read -1 each, so the requirement is a full footprint rather than a hotter one
+3. Passive heating is off
+    - `#create:passive_boiler_heaters` (campfires, lava, magma) no longer heats boilers or basins, and neither does an unfed blaze burner
+    - A charcoal-fed Basic Burner gives exactly what they used to, so steam costs fuel now
+    - `[burner] passiveBoilerHeaters` puts them back; `[burner] basicBurnerBoiler` instead keeps the burner out of the boiler entirely, which puts them back as a side effect
+    - `#tinkersmetallurgy:lowheat_recipe_heaters` is empty and yours: blocks in it count as low heat for recipes without ever heating a boiler
+4. 38 low-heated cooking recipes come with it
+    - Chocolate, builder's tea, the three vanilla soups and ~33 Farmer's Delight dishes, all guarded by `forge:mod_loaded`
+    - Empty `#tinkersmetallurgy:lowheated_cooking` in a datapack to drop the lot
+5. Recipe viewer
+    - Low-heated basin and mixing recipes draw the Basic Burner, not a blaze burner, and no blaze cake
+    - Tinkers' foundry category prints the new requirement alongside the other two
+6. Optional integrations, all compile-only, none required
+    - KubeJS: `.lowheated()` alongside `.heated()` and `.superheated()`, both on Create's processing schema and on Create: Metallurgy's, so foundry lid and mixer recipes can be written at the new tier
+    - Jade: a burner's heat requirement and how long its fuel has left
+7. Differences from Create Low-Heated
+    - No creative tab of its own; the burner sits in Create's, next to the blaze burner it stands in for
+    - Comparator output is 0 unlit, 1 lit, 2 empowered. Upstream read the heat level's ordinal, which stopped ordering correctly once `LOW` was appended to the end of the enum
+    - The burner crackles while lit. Upstream's `animateTick` had a pre-1.20 signature, so it never bound
+    - A second, slower fan aimed at a burner no longer clears the empowered flag a faster one set, and burner placement honours `fanHorizontalOnly` the way the fan itself already did
+    - Low-heated flames in the recipe viewer scroll at the speed of the tier below a lit blaze, not the fastest of the lot, which is what `LOW`'s ordinal was giving them
+    - Dispenser support reads the dispenser's inventory at the top of `dispenseFrom` instead of capturing its locals partway through
+    - Corrupt `FuelLevel` NBT falls back to unlit rather than throwing on chunk load
+    - Create: Crafts & Additions and The One Probe support is not carried over; neither is a dependency here
+
 ## v1.1.0
 
 1. Tinkers' melting category dropped

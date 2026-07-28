@@ -22,30 +22,58 @@ public class MixinPlugin implements IMixinConfigPlugin {
     private static final String JEI_CATALYST_REGISTRATION =
             "mezz.jei.api.registration.IRecipeCatalystRegistration";
 
+    private static final String KUBEJS_RECIPE = "dev.latvian.mods.kubejs.recipe.RecipeJS";
+
+    // kubejs's create integration ships separately from kubejs itself.
+    private static final String KUBEJS_CREATE_SCHEMA = "dev.latvian.mods.kubejs.create.ProcessingRecipeSchema";
+
     private static final Set<String> CM_MIXINS = Set.of(
             "com.tinkersmetallurgy.mixin.CastingBlockMixin",
             "com.tinkersmetallurgy.mixin.CastingRecipeAccessor",
-            "com.tinkersmetallurgy.mixin.CastingRendererMixin");
+            "com.tinkersmetallurgy.mixin.CastingRendererMixin",
+            "com.tinkersmetallurgy.mixin.KubeJsFoundryMixin");
 
     private static final Set<String> CREATE_MIXINS = Set.of(
             "com.tinkersmetallurgy.mixin.ProcessingRecipeAccessor",
             "com.tinkersmetallurgy.mixin.BasinRecipeMixin",
-            "com.tinkersmetallurgy.mixin.CreateJeiMixin");
+            "com.tinkersmetallurgy.mixin.CreateJeiMixin",
+            "com.tinkersmetallurgy.mixin.HeatLevelMixin",
+            "com.tinkersmetallurgy.mixin.HeatConditionMixin",
+            "com.tinkersmetallurgy.mixin.BasinHeatMixin",
+            "com.tinkersmetallurgy.mixin.BoilerHeatersMixin",
+            "com.tinkersmetallurgy.mixin.EncasedFanMixin",
+            // vanilla target, but the handler reaches straight into the burner.
+            "com.tinkersmetallurgy.mixin.DispenserMixin",
+            "com.tinkersmetallurgy.mixin.BasinCategoryMixin",
+            "com.tinkersmetallurgy.mixin.MixingCategoryMixin");
 
     private static final Set<String> JEI_MIXINS = Set.of(
             "com.tinkersmetallurgy.mixin.TicCatalystMixin",
             "com.tinkersmetallurgy.mixin.TicCategoryMixin",
-            "com.tinkersmetallurgy.mixin.CreateJeiMixin");
+            "com.tinkersmetallurgy.mixin.CreateJeiMixin",
+            "com.tinkersmetallurgy.mixin.BasinCategoryMixin",
+            "com.tinkersmetallurgy.mixin.MixingCategoryMixin");
+
+    private static final Set<String> KUBEJS_MIXINS = Set.of(
+            "com.tinkersmetallurgy.mixin.KubeJsCreateMixin",
+            "com.tinkersmetallurgy.mixin.KubeJsFoundryMixin");
+
+    private static final Set<String> KUBEJS_CREATE_MIXINS = Set.of(
+            "com.tinkersmetallurgy.mixin.KubeJsCreateMixin");
 
     private boolean cmPresent;
     private boolean createPresent;
     private boolean jeiPresent;
+    private boolean kubejsPresent;
+    private boolean kubejsCreatePresent;
 
     @Override
     public void onLoad(String mixinPackage) {
         cmPresent = classExists(CM_CASTING_BLOCK);
         createPresent = classExists(CREATE_PROCESSING_RECIPE);
         jeiPresent = classExists(JEI_CATALYST_REGISTRATION);
+        kubejsPresent = classExists(KUBEJS_RECIPE);
+        kubejsCreatePresent = classExists(KUBEJS_CREATE_SCHEMA);
     }
 
     // Class.forName defines the class, and defining a mixin target before mixin can transform it
@@ -62,6 +90,12 @@ public class MixinPlugin implements IMixinConfigPlugin {
             return false;
         }
         if (CREATE_MIXINS.contains(mixinClassName) && !createPresent) {
+            return false;
+        }
+        if (KUBEJS_MIXINS.contains(mixinClassName) && !kubejsPresent) {
+            return false;
+        }
+        if (KUBEJS_CREATE_MIXINS.contains(mixinClassName) && !kubejsCreatePresent) {
             return false;
         }
         return !JEI_MIXINS.contains(mixinClassName) || jeiPresent;

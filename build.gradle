@@ -73,9 +73,12 @@ repositories {
     // registrate
     maven { url = 'https://maven.tterrag.com' }
 
-    // create metallurgy
+    // create metallurgy, jade
     maven { url = 'https://api.modrinth.com/maven'; content { includeGroup 'maven.modrinth' } }
     maven { url = 'https://www.cursemaven.com'; content { includeGroup 'curse.maven' } }
+
+    // kubejs and rhino
+    maven { url = 'https://maven.latvian.dev/releases'; content { includeGroup 'dev.latvian.mods' } }
 }
 
 dependencies {
@@ -100,6 +103,13 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    // optional integrations, compiled against and never shipped. no runtime entries: the jade plugin
+    // is only loaded by jade's own scan, and the kubejs mixins are gated on their targets existing.
+    compileOnly fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}") { transitive = false }
+    compileOnly fg.deobf("dev.latvian.mods:kubejs-create-forge:${kubejs_create_version}") { transitive = false }
+    compileOnly fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}") { transitive = false }
+    compileOnly fg.deobf("maven.modrinth:jade:${jade_version}")
 }
 
 tasks.named('processResources', ProcessResources).configure {

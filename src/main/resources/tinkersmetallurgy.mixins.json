@@ -13,8 +13,23 @@
         "CastingBlockMixin",
         "ProcessingRecipeAccessor",
         "CastingRecipeAccessor",
-        "BasinRecipeMixin"
+        "BasinRecipeMixin",
+        "HeatLevelMixin",
+        "HeatConditionMixin",
+        "BasinHeatMixin",
+        "BoilerHeatersMixin",
+        "EncasedFanMixin",
+        "DispenserMixin",
+        "KubeJsCreateMixin",
+        "KubeJsFoundryMixin"
     ],
-    "client": ["CastingRendererMixin", "TicCatalystMixin", "TicCategoryMixin", "CreateJeiMixin"],
+    "client": [
+        "CastingRendererMixin",
+        "TicCatalystMixin",
+        "TicCategoryMixin",
+        "CreateJeiMixin",
+        "BasinCategoryMixin",
+        "MixingCategoryMixin"
+    ],
     "server": []
 }

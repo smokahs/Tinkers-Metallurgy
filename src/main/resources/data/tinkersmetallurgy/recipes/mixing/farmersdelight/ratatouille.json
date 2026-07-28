@@ -1,0 +1,16 @@
+{
+  "conditions": [
+    { "type": "forge:mod_loaded", "modid": "farmersdelight" },
+    { "type": "forge:not",  "value":{ "type": "forge:tag_empty", "tag": "tinkersmetallurgy:lowheated_cooking" }}
+  ],
+  "type": "create:mixing",
+  "heatRequirement": "lowheated",
+  "results": [{ "item": "farmersdelight:ratatouille" }], 
+  "ingredients": [
+    { "item": "minecraft:bowl" },
+    { "tag": "forge:crops/tomato" },
+    { "tag": "forge:crops/onion" },
+    { "item": "minecraft:beetroot" },
+    { "tag": "forge:vegetables" }
+  ]
+}

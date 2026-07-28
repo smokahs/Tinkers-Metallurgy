@@ -1,10 +1,13 @@
 package com.tinkersmetallurgy;
 
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import com.tinkersmetallurgy.burner.Setup;
 import com.tinkersmetallurgy.config.Cfg;
 
 import com.mojang.logging.LogUtils;
@@ -26,7 +29,10 @@ public final class TinkersMetallurgy {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TinkersMetallurgy() {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        // config first: the burner's block entity reads it the moment one is placed.
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Cfg.SPEC);
+        Setup.register(modBus);
     }
 
     public static boolean nhLoaded() {

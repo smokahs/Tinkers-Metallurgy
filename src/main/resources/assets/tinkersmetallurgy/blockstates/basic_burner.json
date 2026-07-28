@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "tinkersmetallurgy:block/basic_burner_off"
+    },
+    "lit=true": {
+      "model": "tinkersmetallurgy:block/basic_burner"
+    }
+  }
+}

@@ -17,6 +17,10 @@ Requires [Mantle](https://www.curseforge.com/minecraft/mc-mods/mantle), [Tinkers
 
 Replaces all Tinker's Smeltery functions with Create Metallurgy's foundry, with full recipe compatibility!
 
+ Has all features of [Create Low-Heated](https://github.com/zehmaria/createlowheated) (MIT): a **Basic Burner** that burns solid fuel for a new `lowheated` tier below the blaze burner, and no more free heat from campfires, lava or an unfed blaze burner.
+
+> **Do not install [Create Low-Heated](https://modrinth.com/mod/create-low-heated) alongside this.** Both add the same constant to Create's heat enums and the second one to try will not survive.
+
 ## Requirements
 
 The following mods are dependencies:
@@ -29,6 +33,8 @@ The following mods are dependencies:
 | Create: Metallurgy | 1.0.1+ |
 
 [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) is optional, i worked hard on the recipeviewers!!!!
+
+[KubeJS](https://www.curseforge.com/minecraft/mc-mods/kubejs) and [Jade](https://www.curseforge.com/minecraft/mc-mods/jade) are optional too. KubeJS gets `.lowheated()` next to `.heated()` and `.superheated()`, on Create's processing recipes and on Create: Metallurgy's foundry ones. Jade shows a burner's tier and how long its fuel has left.
 
 ## Changelog
 
